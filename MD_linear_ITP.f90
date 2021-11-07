@@ -22,9 +22,6 @@ CONTAINS
   !THE SLOPE
   REAL*8, DIMENSION(1:I_N-1) :: SLOPE
 
-  !Y-INTERCEPT
-  REAL*8, DIMENSION(1:I_N-1) :: Y_ITC
-
   INTEGER :: I, J, L
   INTEGER :: k, K_N
   INTEGER :: Y_N
@@ -33,7 +30,6 @@ CONTAINS
   T_V = 0.0
   O_V = 0.0
   SLOPE = 0.0
-  Y_ITC = 0.0 
 
   k = 0
 
@@ -42,14 +38,14 @@ CONTAINS
      k = k+1
   END DO
 
-  DO I = 1, I_N
-     PRINT *, I, "=", I_V(I)
-  END DO
+!  DO I = 1, I_N
+!     PRINT *, I, "=", I_V(I)
+!  END DO
 
 !CALCULATE THE SLOPE
   DO J = 2, I_N
      SLOPE(J-1) = ( I_V(J) - I_V(J-1)  ) / N_ITP
-     PRINT *, J-1, SLOPE(J-1)
+!     PRINT *, J-1, SLOPE(J-1)
   END DO
 
 !CALCULATE THE Y-INTECEPT
@@ -57,12 +53,11 @@ CONTAINS
 
      Y_N = N_ITP * L
 
-     Y_ITC(L) = T_V(Y_N) - SLOPE(L) * 1
-
 !PUT THE INTERPOLATED VALUES
-     T_V(Y_N) = SLOPE(L) * Y_N + Y_ITC(L)
+     T_V(Y_N) = T_V(2*L-1)+ SLOPE(L) * (Y_N-(2*L-1))
 
-     PRINT *, L, Y_ITC(L), T_V(Y_N)
+     PRINT *, L, T_V(Y_N)
+!     PRINT *, Y_N, T_V(Y_N)
   END DO
 
 !ASSIGNMENT

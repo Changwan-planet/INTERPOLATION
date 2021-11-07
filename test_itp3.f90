@@ -58,10 +58,10 @@ DO L = 1,I_N-1
    
    Y_N = N_ITP* L
    
-   Y_ITC(L) = T_V(Y_N) - SLOPE(L) * 1
+!   Y_ITC(L) = T_V(Y_N) - SLOPE(L) * (Y_N-(2*L-1))
 
 !PUT THE INTERPOLATED VALUES
-   T_V(Y_N) = SLOPE(L) * Y_N +Y_ITC(L) 
+   T_V(Y_N) = T_V(2*L-1)+ SLOPE(L) * (Y_N-(2*L-1))
    
    PRINT *, L, Y_ITC(L),T_V (Y_N)
 END DO
