@@ -1,0 +1,72 @@
+MODULE MD_linear_ITP
+IMPLICIT NONE
+
+CONTAINS
+  SUBROUTINE linear(N_ITP,I_N, I_V, O_N, O_V)
+  IMPLICIT NONE
+
+  !NUMBER OF INTERPOLATION
+  REAL*8, INTENT(IN) :: N_ITP
+  
+  !INPUT_NUMBER AND OUTPUT_NUMBER
+  INTEGER, INTENT(IN) :: I_N 
+  INTEGER, INTENT(IN) :: O_N
+  
+  !INPUT_VALUE AND OUPUT_VALUE
+  REAL*8, DIMENSION(1:I_N), INTENT(IN) :: I_V 
+  REAL*8, DIMENSION(1:O_N) :: O_V
+
+  !TEMPORARY VALUE
+  REAL*8, DIMENSION(1:O_N) :: T_V 
+
+  !THE SLOPE
+  REAL*8, DIMENSION(1:I_N-1) :: SLOPE
+
+  !Y-INTERCEPT
+  REAL*8, DIMENSION(1:I_N-1) :: Y_ITC
+
+  INTEGER :: I, J, L
+  INTEGER :: k, K_N
+  INTEGER :: Y_N
+
+  !INITIALIZATION
+  T_V = 0.0
+  O_V = 0.0
+  SLOPE = 0.0
+  Y_ITC = 0.0 
+
+  k = 0
+
+  DO I = 1, I_N
+     T_V(I+k) = I_V(I)
+     k = k+1
+  END DO
+
+  DO I = 1, I_N
+     PRINT *, I, "=", I_V(I)
+  END DO
+
+!CALCULATE THE SLOPE
+  DO J = 2, I_N
+     SLOPE(J-1) = ( I_V(J) - I_V(J-1)  ) / N_ITP
+     PRINT *, J-1, SLOPE(J-1)
+  END DO
+
+!CALCULATE THE Y-INTECEPT
+  DO L = 1, I_N-1
+
+     Y_N = N_ITP * L
+
+     Y_ITC(L) = T_V(Y_N) - SLOPE(L) * 1
+
+!PUT THE INTERPOLATED VALUES
+     T_V(Y_N) = SLOPE(L) * Y_N + Y_ITC(L)
+
+     PRINT *, L, Y_ITC(L), T_V(Y_N)
+  END DO
+
+!ASSIGNMENT
+  O_V = T_V
+
+  END SUBROUTINE linear
+END MODULE MD_linear_ITP
