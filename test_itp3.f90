@@ -1,0 +1,82 @@
+PROGRAM interpolation
+IMPLICIT NONE
+
+CHARACTER (LEN=120) :: INPUT_PATH
+CHARACTER (LEN=120) :: OUTPUT_PATH
+
+!INPUT_NUMBER AND OUTPUT_NUMBER
+INTEGER, PARAMETER :: I_N = 6
+INTEGER, PARAMETER :: O_N = 2 * I_N - 1
+
+!THE SLOPE 
+REAL*8, DIMENSION(1:I_N-1) ::  SLOPE
+
+!Y_INTERCEPT
+REAL*8, DIMENSION(1:I_N-1) :: Y_ITC
+
+!INPUT_VALUE AND OUPUT_VALUE
+REAL*8, DIMENSION(1:I_N) :: I_V 
+REAL*8, DIMENSION(1:O_N) :: T_V 
+REAL*8, DIMENSION(1:O_N) :: O_V 
+
+REAL*8 :: N_ITP = 2.0 ! NUMBER OF INTEPOLATION
+INTEGER :: I, J, L 
+INTEGER :: k, K_N
+INTEGER ::  Y_N
+
+INPUT_PATH = "/home/changwan/INTERPOLATION/input_values.txt"
+!OUTPUT_PATH = "/home/changwan/INTERPOLATION/output_values.txt"
+
+
+OPEN(UNIT=10, FILE=INPUT_PATH, FORM='FORMATTED' &
+     , STATUS='OLD',ACTION='READ')
+!OPEN(UNIT=20, FILE=OUTPUT_PATH, STATUS='REPLACE' &
+!     , ACTION='WRITE')
+
+READ(10,*) I_V
+
+T_V = 0.0 
+k = 0
+
+  DO I = 1, I_N
+     T_V(I+k) = I_V(I)
+     k = k + 1
+  END DO
+
+  DO I = 1, O_N
+     PRINT *, I,"=",T_V(I)
+  END DO
+
+!CALCULATE THE SLOPE
+DO J = 2, I_N  
+   SLOPE(J-1) = ( I_V(J) - I_V(J-1) ) / N_ITP
+   PRINT *, J-1, SLOPE(J-1)  
+END DO
+
+!CALCULATE Y-INTERCEPT
+DO L = 1,I_N-1
+   
+   Y_N = N_ITP* L
+   
+!   Y_ITC(L) = T_V(Y_N) - SLOPE(L) * (Y_N-(2*L-1))
+
+!PUT THE INTERPOLATED VALUES
+   T_V(Y_N) = T_V(2*L-1)+ SLOPE(L) * (Y_N-(2*L-1))
+   
+   PRINT *, L, Y_ITC(L),T_V (Y_N)
+END DO
+!PRINT *, T_V(1), T_V(O_N), SLOPE, Y_ITC
+
+O_V = T_V
+
+!OUTPUT
+
+DO I=1,O_N
+!   WRITE(20,*) O_V(I)
+    PRINT *, O_V(I)
+END DO
+
+!PRINT *, T_V(1), T_V(O_N), SLOPE, Y_ITC
+!PRINT *, T_V
+
+END PROGRAM
