@@ -1,4 +1,4 @@
-
+##
 sample=4096
 c=3*(10**8)
 permit=25
@@ -14,7 +14,8 @@ depth_interval = k
 set link y2 via (y/depth_interval)+600 inverse (y-600)*depth_interval
 #set link y2 via (y/depth_interval) inverse y*depth_interval
 
-set link x2 via 6*x+1 inverse (x-1)/6
+#interolated number=8
+set link x2 via (x*8)+35 inverse (x-35)/8
 #set link x2 via x/dis_interval inverse x*dis_interval
 
 
@@ -33,5 +34,8 @@ set palette negative
 #set palette defined (0 '#000fff',\
 #                     1 '#90ff70',\
 #                     2 '#ee0000')
-set palette model HSV
+#set palette model HSV
+
+set palette model RGB
+set palette defined (-1.5 'white', -1.0 'blue', 0 'red', 0.5 'white', 1.5 'black')
 
